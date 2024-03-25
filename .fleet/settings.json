@@ -11,6 +11,14 @@
         {
             "type": "add",
             "pluginName": "fleet.tailwindcss"
+        },
+        {
+            "type": "add",
+            "pluginName": "fleet.image.view"
+        },
+        {
+            "type": "add",
+            "pluginName": "fleet.git.frontend"
         }
     ]
 }
