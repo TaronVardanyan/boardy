@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 import { Plus } from "lucide-react";
 import { api } from "@/convex/_generated/api";
 import { useApiMutation } from "@/hooks/use-api-mutation";
@@ -17,7 +18,11 @@ const NewBoardButton = ({ orgId, disabled }:NewBoardButtonProps) => {
         await mutate({
             orgId,
             title: "Untitled",
-        });
+        })
+        .then((id) => {
+            toast.success("Board created");
+        })
+        .catch(() => toast.error("Failed to create board"));
     };
     
     return <button
@@ -25,7 +30,7 @@ const NewBoardButton = ({ orgId, disabled }:NewBoardButtonProps) => {
         onClick={onClick}
         className={cn(
             "col-span-1 aspect-[100/127] bg-blue-600 rounded-lg hover:bg-blue-800 flex flex-col items-center justify-center py-6",
-            disabled && "opacity-75"
+            (pending || disabled) && "opacity-75 cursor-not-allowed"
         )}
         >
         <Plus className="h-12 w-12 text-white stroke-1"/>
