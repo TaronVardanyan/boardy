@@ -2,12 +2,13 @@
 
 import { ReactNode } from "react";
 import ConfirmModal from "@/components/confirm-modal";
-import { Link2, Trash2 } from "lucide-react";
+import { Link2, Trash2, Pencil } from "lucide-react";
 import { api } from "@/convex/_generated/api";
 import { useApiMutation } from "@/hooks/use-api-mutation";
 import {DropdownMenuContentProps} from "@radix-ui/react-dropdown-menu";
 import {toast} from "sonner";
 import { Button } from "@/components/ui/button";
+import {useRenameModal} from "@/store/use-rename-modal";
 import {
     DropdownMenu,
     DropdownMenuTrigger,
@@ -31,6 +32,7 @@ const Actions = ({
     children,
     sideOffset,
 }:ActionsProps) => {
+    const { onOpen } = useRenameModal();
     const { mutate, pending } = useApiMutation(api.board.remove);
     const onCopyLink = () => {
         navigator.clipboard.writeText(`${window.location.origin}/board/${id}`)
@@ -60,6 +62,14 @@ const Actions = ({
             >
                 <Link2 className="h-4 w-4 mr-2"/>
                 Copy board link
+            </DropdownMenuItem>
+            <DropdownMenuSeparator/>
+            <DropdownMenuItem
+                className="p-3 cursor-pointer"
+                onClick={() => onOpen(id, title)}
+            >
+                <Pencil className="h-4 w-4 mr-2"/>
+                Rename
             </DropdownMenuItem>
             <DropdownMenuSeparator/>
             <ConfirmModal
