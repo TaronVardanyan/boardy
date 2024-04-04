@@ -11,9 +11,8 @@ interface CanvasProps {
 const Canvas = ({
     boardId
 }:CanvasProps) => {
-    console.log(boardId, 2222);
     return <main className="h-full w-full relative bg-neutral-100 touch-none">
-        <Info />
+        <Info boardId={boardId}/>
         <Participants />
         <Toolbar />
     </main>
