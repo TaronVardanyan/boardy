@@ -69,8 +69,8 @@ export type NoteLayer = {
 };
 
 export type Point = {
-    x: string;
-    y: string;
+    x: number;
+    y: number;
 }
 
 export type XYWH = {
@@ -119,3 +119,5 @@ export enum CanvasMode {
     Resizing,
     Pencil,
 }
+
+export type Layer = RectangleLayer | EllipseLayer | PathLayer | TextLayer | NoteLayer;
