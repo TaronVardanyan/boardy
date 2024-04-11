@@ -43,14 +43,14 @@ const SelectionBox = ({ onResizeHandlePointerDown }:SelectionBoxProps) => {
                width: `${HANDLE_WIDTH}px`,
                height: `${HANDLE_WIDTH}px`,
                transform: `translate(${bounds.x - HANDLE_WIDTH/2}px, ${bounds.y - HANDLE_WIDTH/2}px)`
-       }}
+           }}
            x={0}
            y={0}
            width={bounds.width}
            height={bounds.height}
            onPointerDown={(e) => {
            e.stopPropagation();
-           // add resize fetaure
+           onResizeHandlePointerDown(Side.Top + Side.Left, bounds);
        }}
        />
        <rect
@@ -67,24 +67,24 @@ const SelectionBox = ({ onResizeHandlePointerDown }:SelectionBoxProps) => {
            height={bounds.height}
            onPointerDown={(e) => {
            e.stopPropagation();
-           // add resize fetaure
+           onResizeHandlePointerDown(Side.Top, bounds);
        }}
        />
        <rect
            className="fill-white stroke-blue-500 stroke-1"
            style={{
-           cursor: "nesw-resize",
+               cursor: "nesw-resize",
                width: `${HANDLE_WIDTH}px`,
                height: `${HANDLE_WIDTH}px`,
                transform: `translate(${bounds.x - HANDLE_WIDTH/2 + bounds.width}px, ${bounds.y - HANDLE_WIDTH/2}px)`
-       }}
+           }}
            x={0}
            y={0}
            width={bounds.width}
            height={bounds.height}
            onPointerDown={(e) => {
            e.stopPropagation();
-           // add resize fetaure
+           onResizeHandlePointerDown(Side.Top + Side.Right, bounds);
        }}
        />
        <rect
@@ -101,7 +101,7 @@ const SelectionBox = ({ onResizeHandlePointerDown }:SelectionBoxProps) => {
            height={bounds.height}
            onPointerDown={(e) => {
                e.stopPropagation();
-               // add resize fetaure
+               onResizeHandlePointerDown(Side.Right, bounds);
            }}
        />
        <rect
@@ -118,7 +118,7 @@ const SelectionBox = ({ onResizeHandlePointerDown }:SelectionBoxProps) => {
            height={bounds.height}
            onPointerDown={(e) => {
            e.stopPropagation();
-           // add resize fetaure
+           onResizeHandlePointerDown(Side.Bottom + Side.Right, bounds);
        }}
        />
        <rect
@@ -137,7 +137,7 @@ const SelectionBox = ({ onResizeHandlePointerDown }:SelectionBoxProps) => {
            height={bounds.height}
            onPointerDown={(e) => {
            e.stopPropagation();
-           // add resize fetaure
+           onResizeHandlePointerDown(Side.Bottom, bounds);
        }}
        />
        <rect
@@ -156,7 +156,7 @@ const SelectionBox = ({ onResizeHandlePointerDown }:SelectionBoxProps) => {
            height={bounds.height}
            onPointerDown={(e) => {
            e.stopPropagation();
-           // add resize fetaure
+           onResizeHandlePointerDown(Side.Bottom + Side.Left, bounds);
        }}
        />
        <rect
@@ -175,8 +175,8 @@ const SelectionBox = ({ onResizeHandlePointerDown }:SelectionBoxProps) => {
            height={bounds.height}
            onPointerDown={(e) => {
            e.stopPropagation();
-           // add resize fetaure
-       }}
+           onResizeHandlePointerDown(Side.Left, bounds);
+           }}
        />
        </>  
     )}
