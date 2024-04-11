@@ -35,6 +35,7 @@ import Toolbar from "./toolbar";
 import Participants from "./participants";
 import CursorsPresence from "./cursors-presence";
 import {LiveObject} from "@liveblocks/client";
+import SelectionBox  from "./selection-box";
 
 interface CanvasProps {
     boardId: string;
@@ -199,6 +200,9 @@ const Canvas = ({
                     onLayerPointerDown={onLayerPointerDown}
                     selectionColor={layerIdsToColorSelection[layerId]}
                 />))}
+                <SelectionBox
+                    onResizeHandlePointerDown={() => {}}
+                />
                 <g
                     style={{
                         transform: `translate(${camera.x}px, ${camera.y}px)`
