@@ -1,6 +1,12 @@
 "use client";
 
-import { useCallback, useState, WheelEvent, PointerEvent } from "react";
+import {
+    useCallback,
+    useState,
+    WheelEvent,
+    PointerEvent,
+    useMemo
+} from "react";
 import { MAX_LAYERS } from "@/constants";
 import { nanoid } from "nanoid";
 import LayerPreview from "./layer-preview";
@@ -9,9 +15,10 @@ import {
     useCanUndo,
     useCanRedo,
     useMutation,
-    useStorage,
+    useStorage, useOthersMapped,
 } from "@/liveblocks.config";
 import {
+    connectionIdToColor,
     pointerEventToCanvasPoint,
 } from "@/lib/utils";
 import {
@@ -119,6 +126,52 @@ const Canvas = ({
         canvasState,
     ]);
 
+    const selections = useOthersMapped((other) => other.presence.selection);
+
+    const onLayerPointerDown = useMutation((
+        { self, setMyPresence},
+        e: PointerEvent,
+        layerId: string,
+        ) => {
+
+        if(
+            canvasState.mode === CanvasMode.Pencil ||
+            canvasState.mode === CanvasMode.Inserting
+        ) {
+            return;
+        }
+
+        history.pause();
+        e.stopPropagation();
+
+        const point = pointerEventToCanvasPoint(e, camera);
+
+        if(!self.presence.selection.includes(layerId)) {
+            setMyPresence({ selection: [layerId] }, { addToHistory: true });
+        }
+
+        setCanvasState({ mode: CanvasMode.Translating, current: point });
+    }, [
+        canvasState.mode,
+        setCanvasState,
+        camera,
+        history
+    ]);
+
+    const layerIdsToColorSelection = useMemo(() => {
+        const layerIdsToColorSelection: Record<string, string> = {};
+
+        for(const user of selections) {
+            const [connectionId, selection] = user;
+
+            for(const layerId of selection) {
+                layerIdsToColorSelection[layerId] = connectionIdToColor(connectionId);
+            }
+        }
+
+        return layerIdsToColorSelection;
+    }, [selections]);
+
     return (
         <main
             className="h-full w-full relative bg-neutral-100 touch-none"
@@ -143,8 +196,8 @@ const Canvas = ({
                 {layerIds.map(layerId => (<LayerPreview
                     key={layerId}
                     id={layerId}
-                    onLayerPointerDown={() => {}}
-                    selectionColor="#000"
+                    onLayerPointerDown={onLayerPointerDown}
+                    selectionColor={layerIdsToColorSelection[layerId]}
                 />))}
                 <g
                     style={{
