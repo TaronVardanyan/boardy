@@ -28,6 +28,8 @@ import {
     CanvasState,
     LayerType,
     Point,
+    XYWH,
+    Side,
 } from "@/types/canvas";
 
 import Info from "./info";
@@ -86,6 +88,15 @@ const Canvas = ({
         setMyPresence({ selection: [layerId] }, { addToHistory: true });
         setCanvasState({ mode: CanvasMode.None });
 }, [lastUsedColor]);
+
+    const onResizeHandlePointerDown = useCallback((corner: Side, initialBounds: XYWH) => {
+        history.pause();
+        setCanvasState({
+            mode: CanvasMode.Resizing,
+            initialBounds,
+            corner,
+        });
+    }, [history]);
 
     const onWheel = useCallback((e: WheelEvent) => {
         setCamera((camera) => ({
