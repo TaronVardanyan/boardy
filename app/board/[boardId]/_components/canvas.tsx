@@ -14,6 +14,7 @@ import Participants from "./participants";
 import CursorsPresence from "./cursors-presence";
 import {LiveObject} from "@liveblocks/client";
 import SelectionBox from "./selection-box";
+import SelectionTools from "./selection-tools";
 
 interface CanvasProps {
     boardId: string;
@@ -260,6 +261,10 @@ const Canvas = ({
                 canUndo={canUndo}
                 undo={history.undo}
                 redo={history.redo}
+            />
+            <SelectionTools
+                camera={camera}
+                setLastUsedColor={setLastUsedColor}
             />
             <svg
                 className="h-[100vh] w-[100vw]"
