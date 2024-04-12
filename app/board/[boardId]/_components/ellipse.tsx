@@ -1,36 +1,36 @@
 import { PointerEvent } from "react";
-import { RectangleLayer } from "@/types/canvas";
+import { EllipseLayer } from "@/types/canvas";
 import { colorToCss } from "@/lib/utils";
 
-interface RectangleProps {
+interface EllipseProps {
     id: string;
-    layer: RectangleLayer;
+    layer: EllipseLayer;
     onPointerDown: (e: PointerEvent, id: string) => void;
     selectionColor?: string;
 }
 
-const Rectangle = ({
+const Ellipse = ({
     id,
     layer,
     selectionColor,
     onPointerDown
-}:RectangleProps) => {
+}:EllipseProps) => {
     const { x, y, width, height, fill } = layer;
-    
-    return (<rect
+
+    return (<ellipse
         className="drop-shadow-md"
         onPointerDown={(e) => onPointerDown(e, id)}
         style={{
-            transform: `translate(${x}px, ${y}px)`
-        }}
-        x={0}
-        y={0}
-        width={width}
-        height={height}
+        transform: `translate(${x}px, ${y}px)`
+    }}
+        cx={width/2}
+        cy={height/2}
+        rx={width/2}
+        ry={height/2}
         strokeWidth={1}
         fill={fill ? colorToCss(fill) : "#CCCCCC"}
         stroke={selectionColor || "transparent"}
     />);
 }
 
-export default Rectangle;
+export default Ellipse;
