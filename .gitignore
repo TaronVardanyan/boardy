@@ -19,6 +19,7 @@
 # misc
 .DS_Store
 *.pem
+.fleet
 
 # debug
 npm-debug.log*
