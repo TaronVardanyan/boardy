@@ -1,12 +1,14 @@
 "use client";
 
 import { PointerEvent, memo } from "react";
+import {colorToCss} from "@/lib/utils";
 import {useStorage} from "@/liveblocks.config";
 import {LayerType} from "@/types/canvas";
 import Rectangle from "./rectangle";
 import Ellipse from "./ellipse";
 import Text from "./text";
 import Note from "./note";
+import Path from "./path";
 
 interface LayerPreviewProps {
     id: string;
@@ -50,6 +52,15 @@ const LayerPreview = ({ id, onLayerPointerDown, selectionColor }:LayerPreviewPro
                 selectionColor={selectionColor}
                 onPointerDown={onLayerPointerDown}
             />;
+        case LayerType.Path:
+                return <Path
+                    x={layer.x}
+                    y={layer.y}
+                    fill={layer.fill ? colorToCss(layer.fill) : "#000"}
+                    points={layer.points}
+                    stroke={selectionColor}
+                    onPointerDown={(e) => onLayerPointerDown(e, id)}
+                />;
         default:
             console.warn("Unknown layer type");
             return null;
