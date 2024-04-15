@@ -10,7 +10,7 @@ const List = () => {
     },
   })
 
-  return !!userMemberships.data.length ? (
+  return !!userMemberships.data?.length ? (
     <ul className="space-y-4">
       {userMemberships.data.map((mem) => (
         <Item

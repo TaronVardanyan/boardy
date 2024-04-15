@@ -7,7 +7,7 @@ interface PathProps {
   y: number
   fill: string
   points: number[][]
-  onPointerDown?: () => void
+  onPointerDown?: (e: any) => void
   stroke?: string
 }
 
