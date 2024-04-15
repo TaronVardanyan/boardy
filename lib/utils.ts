@@ -1,67 +1,67 @@
-import {PointerEvent} from "react";
-import {type ClassValue, clsx} from "clsx";
-import {twMerge} from "tailwind-merge";
-import {Camera, Color, Layer, LayerType, PathLayer, Point, Side, XYWH} from "@/types/canvas";
+import { PointerEvent } from 'react'
+import { type ClassValue, clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+import {
+  Camera,
+  Color,
+  Layer,
+  LayerType,
+  PathLayer,
+  Point,
+  Side,
+  XYWH,
+} from '@/types/canvas'
 
-const COLORS = [
-  "#DC2626",
-  "#D97706",
-  "#059669",
-  "#7C3AED",
-  "#DB2777"
-];
+const COLORS = ['#DC2626', '#D97706', '#059669', '#7C3AED', '#DB2777']
 
 export function connectionIdToColor(connectionId: number): string {
-  return COLORS[connectionId % COLORS.length];
+  return COLORS[connectionId % COLORS.length]
 }
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function pointerEventToCanvasPoint(
-  e: PointerEvent,
-  camera: Camera,
-  ) {
+export function pointerEventToCanvasPoint(e: PointerEvent, camera: Camera) {
   return {
     x: Math.round(e.clientX) - camera.x,
     y: Math.round(e.clientY) - camera.y,
-  };
+  }
 }
 
-export function colorToCss (color: Color) {
-  return `#${color.r.toString(16).padStart(2, "0")}${color.g.toString(16).padStart(2, "0")}${color.b.toString(16).padStart(2, "0")}`
+export function colorToCss(color: Color) {
+  return `#${color.r.toString(16).padStart(2, '0')}${color.g.toString(16).padStart(2, '0')}${color.b.toString(16).padStart(2, '0')}`
 }
 
-export function resizeBounds (bounds: XYWH, corner: Side, point: Point):XYWH {
+export function resizeBounds(bounds: XYWH, corner: Side, point: Point): XYWH {
   const result = {
     x: bounds.x,
     y: bounds.y,
     width: bounds.width,
     height: bounds.height,
-  };
+  }
 
   if ((corner & Side.Left) === Side.Left) {
-    result.x = Math.min(point.x, bounds.x + bounds.width);
-    result.width = Math.abs(bounds.x + bounds.width - point.x);
+    result.x = Math.min(point.x, bounds.x + bounds.width)
+    result.width = Math.abs(bounds.x + bounds.width - point.x)
   }
 
   if ((corner & Side.Right) === Side.Right) {
-    result.x = Math.min(point.x, bounds.x);
-    result.width = Math.abs(point.x - bounds.x);
+    result.x = Math.min(point.x, bounds.x)
+    result.width = Math.abs(point.x - bounds.x)
   }
 
   if ((corner & Side.Top) === Side.Top) {
-    result.y = Math.min(point.y, bounds.y + bounds.height);
-    result.height = Math.abs(bounds.y + bounds.height - point.y);
+    result.y = Math.min(point.y, bounds.y + bounds.height)
+    result.height = Math.abs(bounds.y + bounds.height - point.y)
   }
 
   if ((corner & Side.Bottom) === Side.Bottom) {
-    result.y = Math.min(point.y, bounds.y);
-    result.height = Math.abs(point.y - bounds.y);
+    result.y = Math.min(point.y, bounds.y)
+    result.height = Math.abs(point.y - bounds.y)
   }
 
-  return result;
+  return result
 }
 
 export function findIntersectingLayersWithRectangle(
@@ -77,66 +77,66 @@ export function findIntersectingLayersWithRectangle(
     height: Math.abs(a.y - b.y),
   }
 
-  const ids = [];
+  const ids = []
 
-  for(const layerId of layerIds) {
-    const layer = layers.get(layerId);
+  for (const layerId of layerIds) {
+    const layer = layers.get(layerId)
 
-    if(!layer) {
-      continue;
+    if (!layer) {
+      continue
     }
 
-    const { x, y, width, height } = layer;
+    const { x, y, width, height } = layer
 
     if (
-       rect.x + rect.width > x &&
-       rect.x < x + width &&
-       rect.y + rect.height > y &&
-       rect.y < y + height
+      rect.x + rect.width > x &&
+      rect.x < x + width &&
+      rect.y + rect.height > y &&
+      rect.y < y + height
     ) {
-      ids.push(layerId);
+      ids.push(layerId)
     }
   }
 
-  return ids;
+  return ids
 }
 
-export function getContrastingTextColor (color: Color) {
-  const luminance = 0.299 * color.r + 0.587 * color.g + 0.144 * color.b;
+export function getContrastingTextColor(color: Color) {
+  const luminance = 0.299 * color.r + 0.587 * color.g + 0.144 * color.b
 
-  return luminance < 182 ? "white" : "black";
+  return luminance < 182 ? 'white' : 'black'
 }
 
-export function penPointsToPathLayer (
+export function penPointsToPathLayer(
   points: number[][],
   color: Color,
-):PathLayer {
-  if(points.length < 2) {
-    throw new Error("Cannot transform points with less that 2 points");
+): PathLayer {
+  if (points.length < 2) {
+    throw new Error('Cannot transform points with less that 2 points')
   }
 
-  let left = Number.POSITIVE_INFINITY;
-  let top = Number.POSITIVE_INFINITY;
-  let right = Number.NEGATIVE_INFINITY;
-  let bottom = Number.NEGATIVE_INFINITY;
+  let left = Number.POSITIVE_INFINITY
+  let top = Number.POSITIVE_INFINITY
+  let right = Number.NEGATIVE_INFINITY
+  let bottom = Number.NEGATIVE_INFINITY
 
   for (const point of points) {
-    const [x, y] = point;
+    const [x, y] = point
 
-    if(left > x) {
+    if (left > x) {
       left = x
     }
 
-    if(top > y) {
-      top = y;
+    if (top > y) {
+      top = y
     }
 
-    if(right < x) {
-      right = x;
+    if (right < x) {
+      right = x
     }
 
-    if(bottom < y) {
-      bottom = y;
+    if (bottom < y) {
+      bottom = y
     }
   }
 
@@ -147,23 +147,22 @@ export function penPointsToPathLayer (
     width: right - left,
     height: bottom - top,
     fill: color,
-    points: points.map(([x, y, pressure]) => ([x -left, y - top, pressure])),
+    points: points.map(([x, y, pressure]) => [x - left, y - top, pressure]),
   }
 }
 
-export function getSvgPathFromStroke (stroke: number[][]) {
-  if(!stroke.length) return "";
+export function getSvgPathFromStroke(stroke: number[][]) {
+  if (!stroke.length) return ''
 
-  const d = stroke.reduce((acc, [x0, y0], i, arr) => {
-    const [x1, y1] = arr[(i + 1) % arr.length];
-    acc.push(x0, y0, (x0 + x1)/2, (y0 + y1)/2);
-    return acc;
-    }, [
-    "M",
-    ...stroke[0],
-    "Q",
-  ]);
+  const d = stroke.reduce(
+    (acc, [x0, y0], i, arr) => {
+      const [x1, y1] = arr[(i + 1) % arr.length]
+      acc.push(x0, y0, (x0 + x1) / 2, (y0 + y1) / 2)
+      return acc
+    },
+    ['M', ...stroke[0], 'Q'],
+  )
 
-  d.push("Z");
-  return d.join(" ");
+  d.push('Z')
+  return d.join(' ')
 }
