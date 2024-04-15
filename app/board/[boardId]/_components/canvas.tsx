@@ -1,6 +1,6 @@
 "use client";
 
-import {PointerEvent, useCallback, useMemo, useState, WheelEvent} from "react";
+import {PointerEvent, useCallback, useMemo, useState, WheelEvent, useEffect, KeyboardEvent} from "react";
 import {MAX_LAYERS, SELECTION_NET_THRESHOLD} from "@/constants";
 import {nanoid} from "nanoid";
 import LayerPreview from "./layer-preview";
@@ -22,6 +22,7 @@ import {LiveObject} from "@liveblocks/client";
 import SelectionBox from "./selection-box";
 import SelectionTools from "./selection-tools";
 import Path from "./path";
+import {useDisableScrollBounce} from "@/hooks/use-disable-scroll-bounce";
 
 interface CanvasProps {
     boardId: string;
@@ -42,6 +43,7 @@ const Canvas = ({
         b: 0,
     });
 
+    useDisableScrollBounce();
     const history = useHistory();
     const canUndo = useCanUndo();
     const canRedo = useCanRedo();
