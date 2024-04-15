@@ -1,24 +1,24 @@
 {
-    "plugins": [
-        {
-            "type": "add",
-            "pluginName": "fleet.javascript"
-        },
-        {
-            "type": "add",
-            "pluginName": "fleet.css"
-        },
-        {
-            "type": "add",
-            "pluginName": "fleet.tailwindcss"
-        },
-        {
-            "type": "add",
-            "pluginName": "fleet.image.view"
-        },
-        {
-            "type": "add",
-            "pluginName": "fleet.git.frontend"
-        }
-    ]
+  "plugins": [
+    {
+      "type": "add",
+      "pluginName": "fleet.javascript"
+    },
+    {
+      "type": "add",
+      "pluginName": "fleet.css"
+    },
+    {
+      "type": "add",
+      "pluginName": "fleet.tailwindcss"
+    },
+    {
+      "type": "add",
+      "pluginName": "fleet.image.view"
+    },
+    {
+      "type": "add",
+      "pluginName": "fleet.git.frontend"
+    }
+  ]
 }
